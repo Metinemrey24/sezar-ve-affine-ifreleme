@@ -1,0 +1,50 @@
+# Şifrelenmiş mesajı girin
+encrypted_message = "IZ HZK RUMFR DVYJWPRG"
+
+# Sezar algoritması için tersine çevirme işlemi
+def caesar_decrypt(cipher_text, shift):
+    plain_text = ""
+    for char in cipher_text:
+        if char.isalpha():
+            ascii_code = ord(char)
+            is_uppercase = ascii_code >= 65 and ascii_code <= 90
+            shifted_ascii_code = ascii_code - shift
+            if is_uppercase:
+                if shifted_ascii_code < 65:
+                    shifted_ascii_code += 26
+            else:
+                if shifted_ascii_code < 97:
+                    shifted_ascii_code += 26
+            plain_text += chr(shifted_ascii_code)
+        else:
+            plain_text += char
+    return plain_text
+
+# Affine algoritması için tersine çevirme işlemi
+def affine_decrypt(cipher_text, a, b):
+    plain_text = ""
+    a_inverse = 0
+    for i in range(26):
+        if (a * i) % 26 == 1:
+            a_inverse = i
+            break
+    for char in cipher_text:
+        if char.isalpha():
+            ascii_code = ord(char)
+            is_uppercase = ascii_code >= 65 and ascii_code <= 90
+            if is_uppercase:
+                shifted_ascii_code = a_inverse * (ascii_code - 65 - b) % 26 + 65
+            else:
+                shifted_ascii_code = a_inverse * (ascii_code - 97 - b) % 26 + 97
+            plain_text += chr(shifted_ascii_code)
+        else:
+            plain_text += char
+    return plain_text
+
+# Sezar algoritması ile tersine çevirme işlemi
+decrypted_message = caesar_decrypt(encrypted_message, shift)
+
+# Affine algoritması ile tersine çevirme işlemi
+final_decrypted_message = affine_decrypt(decrypted_message, a, b)
+
+print(final_decrypted_message)
