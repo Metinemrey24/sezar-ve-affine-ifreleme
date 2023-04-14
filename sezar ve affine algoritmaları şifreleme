@@ -1,0 +1,54 @@
+# Sezar ve affine algoritmalarının birleşmiş versiyonu
+
+# Sezar algoritması için kaydırma miktarı
+shift = 3
+
+# Affine algoritması için sabitleri
+a = 3
+b = 5
+
+# Şifrelenecek mesajı girin
+message = "bu bir ornek mesajdir"
+
+# Sezar algoritması için şifreleme işlemi
+def caesar_encrypt(plain_text, shift):
+    cipher_text = ""
+    for char in plain_text:
+        if char.isalpha():
+            ascii_code = ord(char)
+            is_uppercase = ascii_code >= 65 and ascii_code <= 90
+            shifted_ascii_code = ascii_code + shift
+            if is_uppercase:
+                if shifted_ascii_code > 90:
+                    shifted_ascii_code -= 26
+            else:
+                if shifted_ascii_code > 122:
+                    shifted_ascii_code -= 26
+            cipher_text += chr(shifted_ascii_code)
+        else:
+            cipher_text += char
+    return cipher_text
+
+# Affine algoritması için şifreleme işlemi
+def affine_encrypt(plain_text, a, b):
+    cipher_text = ""
+    for char in plain_text:
+        if char.isalpha():
+            ascii_code = ord(char)
+            is_uppercase = ascii_code >= 65 and ascii_code <= 90
+            if is_uppercase:
+                shifted_ascii_code = ((a * (ascii_code - 65)) + b) % 26 + 65
+            else:
+                shifted_ascii_code = ((a * (ascii_code - 97)) + b) % 26 + 97
+            cipher_text += chr(shifted_ascii_code)
+        else:
+            cipher_text += char
+    return cipher_text
+
+# Sezar algoritması ile şifreleme işlemi
+encrypted_message = caesar_encrypt(message, shift)
+
+# Affine algoritması ile şifreleme işlemi
+final_encrypted_message = affine_encrypt(encrypted_message, a, b)
+
+print(final_encrypted_message)
